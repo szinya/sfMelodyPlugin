@@ -31,7 +31,7 @@ class BasesfMelodyActions extends sfMelodyBaseActions
     {
       $user = $this->getUser()->getGuardUser();
 
-      $conflict = !$melody->getUserFactory()->isCompatible($user);
+      $conflict = !$melody->getUserFactory($melody)->isCompatible($user);
       $event = new sfEvent($this, 'melody.filter_user', array('melody' => $melody, 'conflict' => $conflict));
       $dispatcher = $this->getContext()->getEventDispatcher();
       $user = $dispatcher->filter($event, $user)->getReturnValue();
