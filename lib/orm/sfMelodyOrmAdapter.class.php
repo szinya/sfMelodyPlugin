@@ -11,7 +11,7 @@ class sfMelodyOrmAdapter
   {
     $this->setModel($model);
 
-    if(class_exists('Doctrine'))
+    if(class_exists('Doctrine') || class_exists('Doctrine_Core'))
     {
       $this->orm = self::DOCTRINE;
     }
@@ -38,7 +38,7 @@ class sfMelodyOrmAdapter
 
   public static function getInstance($model)
   {
-    if(class_exists('Doctrine'))
+    if(class_exists('Doctrine') || class_exists('Doctrine_Core'))
     {
       return new sfMelodyDoctrineOrmAdapter($model);
     }
@@ -63,7 +63,7 @@ class sfMelodyOrmAdapter
     switch($this->getOrm())
     {
       case self::DOCTRINE:
-        return Doctrine::getTable($this->getModel());
+        return call_user_func_array(array(class_exists('Doctrine') ? 'Doctrine' : 'Doctrine_Core', 'getTable'), array($this->getModel()));
       case self::PROPEL:
         return $this->getModel() . 'Peer';
     }

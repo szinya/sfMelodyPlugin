@@ -18,9 +18,9 @@ class sfMelodyDoctrineOrmAdapter extends sfMelodyOrmAdapter
 
     if (count($keys) > 0)
     {
-      $q = Doctrine::getTable('sfGuardUser')
-           ->createQuery('u')
-           ->limit(1);
+      $q = call_user_func_array(array(class_exists('Doctrine') ? 'Doctrine' : 'Doctrine_Core', 'getTable'), array('sfGuardUser'));
+      $q = $q->createQuery('u')
+        ->limit(1);
   
       foreach($keys as $key)
       {
